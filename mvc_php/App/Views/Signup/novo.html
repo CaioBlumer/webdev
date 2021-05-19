@@ -1,0 +1,114 @@
+{% extends "base.html" %} 
+
+{% block title %}Cadastro{% endblock %}
+{% block headerimg %}/assets/imgs/home-bg.jpg{% endblock %}
+
+{% block header %}
+	<h1>Cadastro</h1>
+	<span class="subheading">Usuários</span>
+{% endblock %}
+
+{% block footer %}
+
+	<script>
+	
+	$.validator.addMethod('senhaValida',
+		function(value, element, param) {
+			if(value != '') {
+				if(value.match(/.*[a-z]+.*/i) == null) {
+					return false;
+				}
+				if(value.match(/.*\d+.*/) == null) {
+					return false;
+				}
+			}
+			return true;
+		},
+		'Deve conter pelo menos uma letra e um número'
+	);
+	
+	var senha = $('#inputSenha');
+	var olho= $("#olho");
+	
+	olho.mousedown(function() {
+	  senha.attr("type", "text");
+	});
+		
+	olho.mouseup(function() {
+	  senha.attr("type", "password");
+	});
+	// para evitar o problema de arrastar a imagem e a senha continuar exposta
+	$( "#olho" ).mouseout(function() { 
+	  senha.attr("type", "password");
+	});
+	
+	$(document).ready(function() {
+		$('#formCadastrarUsuario').validate({
+			rules: {
+				nome: 'required',
+				email: {
+					required: true,
+					email: true
+				},
+				senha: {
+					required: true,
+					minlength: 4,
+					senhaValida: true					
+				},
+				confirmacao: {
+					equalTo: '#inputSenha'
+				}
+			}
+		});
+	
+	});
+	
+	
+	</script>
+
+{% endblock %}
+
+
+{% block body %}
+	
+	{% if usuario.errors is not empty %}
+        <div class="alert alert-danger">
+			<h3>Erros:</h3>
+        <ul>
+            {% for error in usuario.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        </div>
+    {% endif %}
+    
+<div class="post-preview">
+	<h2 class="post-title">Cadastro de Usuários</h2>
+	<form method="post" action="/signup/cadastrar" id="formCadastrarUsuario" >
+		<div class="form-group">
+			<label for="inputNome">Nome</label>
+			<input class="form-control" id="inputNome" name="nome" placeholder="Nome" autofocus value="{{ usuario.nome }}" required />
+		</div>
+		<div class="form-group">
+			<label for="inputEmail">Email</label>
+			<input class="form-control" id="inputEmail" name="email" placeholder="Email" value="{{ usuario.email }}" required type="email" />
+		</div>
+		<div class="form-group">
+			<label for="inputSenha">Senha</label>
+			<div class="input-group" >
+			<input class="form-control" type="password" id="inputSenha" name="senha" placeholder="Senha" required />
+			<div class="input-group-append" id='olho'>
+			    <span class="input-group-text">
+					<i class="fa fa-eye" ></i>
+				</span>
+			</div>
+        </div>
+		</div>
+		
+		
+		<button class="btn btn-dark" type="submit">Cadastrar</button>
+	
+	</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="post-preview">
+	<h2 class="post-title">Dados Pessoais</h2>
+	<form method="post" action="/perfil/alterar" id="formPerfil" >
+		<div class="form-group">
+			<label for="inputNome">Nome</label>
+			<input class="form-control" id="inputNome" name="nome" placeholder="Nome" autofocus value="{{ usuario.name }}" required />
+		</div>
+		<div class="form-group">
+			<label for="inputEmail">Email</label>
+			<input class="form-control" id="inputEmail" name="email" placeholder="Email" value="{{ usuario.email }}" required type="email" />
+		</div>
+		<div class="form-group">
+			<label for="inputSenha">Senha</label>
+			<div class="input-group" >
+				<input class="form-control" type="password" id="inputSenha" name="senha" placeholder="Senha"
+				aria-describedby="passwordHelpBlock" />
+				<div class="input-group-append" id='olho'>
+			    	<span class="input-group-text">
+						<i class="fa fa-eye" ></i>
+					</span>
+				</div>
+        	</div>
+        	<small id="passwordHelpBlock" class="form-text text-muted">
+			Deixe-a em BRANCO/VAZIA, caso não queira alterar a senha.
+			</small>
+		</div>
+
+
+		<button class="btn btn-dark" type="submit">Salvar</button>
+
+	</form>
+</div>
+
+{% endblock %}
